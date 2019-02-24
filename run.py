@@ -1,10 +1,17 @@
 # Imports
-from slackbot.bot import Bot, respond_to, listen_to
+from slackbot.bot import Bot, respond_to, listen_to, default_reply
 import re
+
+# react with thumb up emoji
+#message.react('+1')
 
 @default_reply
 def my_default_handler(message):
     message.reply('This command has not been coded. Ask a leader or check the command list')
+
+@respond_to('hi', re.IGNORECASE)
+def hi(message):
+    message.reply('I can understand hi or HI!')
 
 # Main function
 def main():
