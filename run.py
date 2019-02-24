@@ -2,16 +2,26 @@
 from slackbot.bot import Bot, respond_to, listen_to, default_reply
 import re
 import logging
+import sys
 
-logging.getLogger().addHandler(logging.StreamHandler())
+# logging config
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 @default_reply
 def my_default_handler(message):
+    logger.info('default reply - message not understood')
     message.reply('This command has not been coded. Ask a leader or check the command list')
 
 @respond_to('hi', re.IGNORECASE)
 def hi(message):
-    message.reply('I can understand hi or HI!')
+    logger.info('Hi command')
+    message.reply('Hello there!')
 
 # Main function
 def main():
