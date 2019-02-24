@@ -1,5 +1,5 @@
 # Imports
-from slackbot.bot import Bot
+from slackbot.bot import Bot, respond_to, listen_to
 
 # Main function
 def main():
