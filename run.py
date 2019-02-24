@@ -1,9 +1,9 @@
 # Imports
 from slackbot.bot import Bot, respond_to, listen_to, default_reply
 import re
+import logging
 
-# react with thumb up emoji
-#message.react('+1')
+logging.getLogger().addHandler(logging.StreamHandler())
 
 @default_reply
 def my_default_handler(message):
