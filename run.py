@@ -27,19 +27,25 @@ def stats(message, announcement=None, code=None):
         message.reply('Announcing your announcement: ' + str(announcement))
         logger.info('announce command')
 
+        # Slack
         slack_data = {
                      'text': str(announcement),
                      'username': 'Dev Club',
                      'icon_emoji': ':dev-club:'
                      }
+        logger.debug('create slack data')
 
         response = post(config.SLACK,
                         data=dumps(slack_data),
                         headers={'Content-Type': 'application/json'}
                         )
+        logger.debug('send slack data through slack webhook')
 
+        # Discord
         webhook = Webhook.partial(config.WEBHOOK_ID, config.WEBHOOK_TOKEN,adapter=RequestsWebhookAdapter())
+        logger.debug('create discord webhook data')
         webhook.send(announcement)
+        logger.debug('send announcement through discord webhook')
 
 # Main function
 def main():
