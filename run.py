@@ -6,6 +6,7 @@ import sys
 from requests import post
 from json import dumps
 import config
+from discord import Webhook, RequestsWebhookAdapter
 
 # logging config
 logger = logging.getLogger(__name__)
@@ -22,19 +23,23 @@ def my_default_handler(message):
 
 @respond_to('announce (.*) (.*)', re.IGNORECASE)
 def stats(message, announcement=None, code=None):
-    message.reply('Announcing your announcement')
-    logger.info('announce command')
+    if code == config.announce_code:
+        message.reply('Announcing your announcement: ' + str(announcement))
+        logger.info('announce command')
 
-    slack_data = {
-                 'text': '',
-                 'username': 'Dev Club',
-                 'icon_emoji': ':dev-club:'
-                 }
+        slack_data = {
+                     'text': str(announcement),
+                     'username': 'Dev Club',
+                     'icon_emoji': ':dev-club:'
+                     }
 
-    response = post(config.SLACK,
-                    data=dumps(slack_data),
-                    headers={'Content-Type': 'application/json'}
-                    )
+        response = post(config.SLACK,
+                        data=dumps(slack_data),
+                        headers={'Content-Type': 'application/json'}
+                        )
+
+        webhook = Webhook.partial(config.WEBHOOK_ID, config.WEBHOOK_TOKEN,adapter=RequestsWebhookAdapter())
+        webhook.send(announcement)
 
 # Main function
 def main():
