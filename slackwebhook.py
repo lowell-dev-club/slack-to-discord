@@ -1,9 +1,9 @@
 # Imports
-from requests import post
 from log import logger
-from config import SLACK
+from json import dumps
+from requests import post
 
-def slackwebhook(message):
+def slackwebhook(message, SLACK):
 
     slack_data = {
                  'text': str(message),
