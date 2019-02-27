@@ -4,7 +4,7 @@ from log import logger
 from config import SLACK
 
 def slackwebhook(message):
-    # Slack
+
     slack_data = {
                  'text': str(message),
                  'username': 'Dev Club',
