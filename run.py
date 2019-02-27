@@ -1,11 +1,10 @@
 # Imports
 import re
 from log import logger
-from json import dumps
-from config import announce_code, SLACK, WEBHOOK_ID, WEBHOOK_TOKEN
-from discord import Webhook, RequestsWebhookAdapter
+from config import announce_code, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE, SLACK_ANNOUNCMENT
 from slackbot.bot import Bot, respond_to, listen_to, default_reply
 from slackwebhook import slackwebhook
+from discordwebhook import discordwebhook
 
 @default_reply
 def my_default_handler(message):
@@ -20,13 +19,9 @@ def stats(message, announcement=None, code=None):
         logger.info('announce command')
 
         # Slack
-        slackwebhook(announcement)
-
+        slackwebhook(announcement, SLACK_ANNOUNCMENT)
         # Discord
-        webhook = Webhook.partial(WEBHOOK_ID, WEBHOOK_TOKEN, adapter=RequestsWebhookAdapter())
-        logger.debug('create discord webhook data')
-        webhook.send(announcement)
-        logger.debug('send announcement through discord webhook')
+        discordwebhook(announcement, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE)
 
     else:
         my_default_handler(message)
