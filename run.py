@@ -1,14 +1,15 @@
 # Imports
 import re
-from log import logger
-from config import announce_code, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE, SLACK_ANNOUNCMENT, BOT_USER_TOKEN
-from slackbot.bot import Bot, respond_to, listen_to, default_reply
-from slackwebhook import slackwebhook
-from discordwebhook import discordwebhook
 import discord
-from discord.ext import commands
+from log import logger
 from json import dumps
 from cogs import music, error, meta, tips
+from config import announce_code, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE, SLACK_ANNOUNCMENT, BOT_USER_TOKEN
+from discord.ext import commands
+from slackbot.bot import Bot, respond_to, listen_to, default_reply
+from webhooks.slackwebhook import slackwebhook
+from webhooks.discordwebhook import discordwebhook
+
 
 # Slack bot
 @default_reply
@@ -58,6 +59,7 @@ def information(message):
         ]
     }]
     message.send_webapi('', dumps(attachments))
+    logger.info('Slack info command')
 
 # Discord bot
 discordbot = commands.Bot(command_prefix='!', description='A bot that plays music.')
@@ -95,6 +97,7 @@ async def info(ctx):
                     value="I can communicate on Slack and Discord to close the gap of the two communities")
 
     await ctx.send(embed=embed)
+    logger.info('Discord info command')
 
 @discordbot.command()
 async def help(ctx):
@@ -111,6 +114,7 @@ async def help(ctx):
                     inline=False)
 
     await ctx.send(embed=embed)
+    logger.info('Discord help command')
 
 # Main functions
 def slack_run():
