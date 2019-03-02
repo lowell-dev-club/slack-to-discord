@@ -71,25 +71,37 @@ async def on_ready():
 
 @discordbot.command()
 async def info(ctx):
-    embed = discord.Embed(title="Dev Club", description="Lowell Dev Club bot.", color=0x59afe1)
+    embed = discord.Embed(title="Dev Club", 
+                          description="Lowell Dev Club bot.", 
+                          color=0x59afe1)
 
     # give info about you here
-    embed.add_field(name="Author", value="Enchanter77#0730")
+    embed.add_field(name="Author", 
+                    value="Enchanter77#0730")
 
     # give command help
-    embed.add_field(name="Help", value="!help to get command list")
+    embed.add_field(name="Help", 
+                    value="!help to get command list")
 
     # give description
-    embed.add_field(name="Why is this a bot?", value="I can communicate on Slack and Discord to close the gap of the two communities")
+    embed.add_field(name="Why is this a bot?",
+                    value="I can communicate on Slack and Discord to close the gap of the two communities")
 
     await ctx.send(embed=embed)
 
 @discordbot.command()
 async def help(ctx):
-    embed = discord.Embed(title="Dev Club", description="Lowell Dev Club bot", color=0xeee657)
+    embed = discord.Embed(title="Dev Club", 
+                          description="Lowell Dev Club bot", 
+                          color=0xeee657)
 
-    embed.add_field(name="!info", value="Gives a little info about the bot", inline=False)
-    embed.add_field(name="!help", value="Gives this message", inline=False)
+    embed.add_field(name="!info", 
+                    value="Gives a little info about the bot", 
+                    inline=False)
+
+    embed.add_field(name="!help", 
+                    value="Gives this message", 
+                    inline=False)
 
     await ctx.send(embed=embed)
 
