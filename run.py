@@ -1,13 +1,14 @@
 # Imports
 import re
 from log import logger
-from config import announce_code, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE, SLACK_ANNOUNCMENT
+from config import announce_code, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE, SLACK_ANNOUNCMENT, BOT_USER_TOKEN
 from slackbot.bot import Bot, respond_to, listen_to, default_reply
 from slackwebhook import slackwebhook
 from discordwebhook import discordwebhook
 import discord
 from discord.ext import commands
 from json import dumps
+from cogs import music, error, meta, tips
 
 # Slack bot
 @default_reply
@@ -62,25 +63,31 @@ def information(message):
 discordbot = commands.Bot(command_prefix='$', description='A bot that plays music.')
 discordbot.remove_command('help')
 
+COGS = [music.Music, error.CommandErrorHandler, meta.Meta, tips.Tips]
+
+def add_cogs(discordbot):
+    for cog in COGS:
+        bot.add_cog(cog(bot, cfg))  # Initialize the cog and add it to the bot
+
 @discordbot.event
 async def on_ready():
     print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
+    print(discordbot.user.name)
+    print(discordbot.user.id)
     print('------------')
 
 @discordbot.command()
 async def info(ctx):
-    embed = discord.Embed(title="Dev Club", 
-                          description="Lowell Dev Club bot.", 
+    embed = discord.Embed(title="Dev Club",
+                          description="Lowell Dev Club bot.",
                           color=0x59afe1)
 
     # give info about you here
-    embed.add_field(name="Author", 
+    embed.add_field(name="Author",
                     value="Enchanter77#0730")
 
     # give command help
-    embed.add_field(name="Help", 
+    embed.add_field(name="Help",
                     value="!help to get command list")
 
     # give description
@@ -91,27 +98,31 @@ async def info(ctx):
 
 @discordbot.command()
 async def help(ctx):
-    embed = discord.Embed(title="Dev Club", 
-                          description="Lowell Dev Club bot", 
+    embed = discord.Embed(title="Dev Club",
+                          description="Lowell Dev Club bot",
                           color=0xeee657)
 
-    embed.add_field(name="!info", 
-                    value="Gives a little info about the bot", 
+    embed.add_field(name="!info",
+                    value="Gives a little info about the bot",
                     inline=False)
 
-    embed.add_field(name="!help", 
-                    value="Gives this message", 
+    embed.add_field(name="!help",
+                    value="Gives this message",
                     inline=False)
 
     await ctx.send(embed=embed)
 
-# Main function
-def main():
+# Main functions
+def slack_run():
     print('----------------------------')
     print(' Lowell Dev CLub Bot Online')
     print('----------------------------')
     bot = Bot()
     bot.run()
 
+def discord_run(discordbot):
+    add_cogs(discordbot)
+    discordbot.run(config.BOT_USER_TOKEN)
+
 if __name__ == '__main__':
-    main()
+    slack_run()
