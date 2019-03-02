@@ -60,7 +60,7 @@ def information(message):
     message.send_webapi('', dumps(attachments))
 
 # Discord bot
-discordbot = commands.Bot(command_prefix='$', description='A bot that plays music.')
+discordbot = commands.Bot(command_prefix='!', description='A bot that plays music.')
 discordbot.remove_command('help')
 
 COGS = [music.Music, error.CommandErrorHandler, meta.Meta, tips.Tips]
@@ -71,10 +71,10 @@ def add_cogs(discordbot):
 
 @discordbot.event
 async def on_ready():
-    print('Logged in as')
-    print(discordbot.user.name)
-    print(discordbot.user.id)
-    print('------------')
+    logger.info('Logged in as')
+    logger.info(discordbot.user.name)
+    logger.info(discordbot.user.id)
+    logger.info('--------------')
 
 @discordbot.command()
 async def info(ctx):
@@ -114,9 +114,9 @@ async def help(ctx):
 
 # Main functions
 def slack_run():
-    print('----------------------------')
-    print(' Lowell Dev CLub Bot Online')
-    print('----------------------------')
+    print('---------------------------------')
+    print(' Lowell Dev CLub Slack Bot Online')
+    print('---------------------------------')
     bot = Bot()
     bot.run()
 
