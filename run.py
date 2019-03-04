@@ -1,6 +1,8 @@
 # Imports
 import re
 import discord
+import threading
+import bot_commands
 from log import logger
 from json import dumps
 from cogs import music, error, meta, tips
@@ -61,15 +63,20 @@ def information(message):
     message.send_webapi('', dumps(attachments))
     logger.info('Slack info command')
 
+listen_to('!tip', re.IGNORECASE)
+@discordbot.command()
+def tip(message):
+    message.send(bot_commands.tip)
+
 # Discord bot
 discordbot = commands.Bot(command_prefix='!', description='A bot that plays music.')
 discordbot.remove_command('help')
 
 COGS = [music.Music, error.CommandErrorHandler, meta.Meta, tips.Tips]
 
-def add_cogs(discordbot):
+def add_cogs(bot):
     for cog in COGS:
-        bot.add_cog(cog(bot, cfg))  # Initialize the cog and add it to the bot
+        bot.add_cog(cog(bot))  # Initialize the cog and add it to the bot
 
 @discordbot.event
 async def on_ready():
@@ -116,6 +123,10 @@ async def help(ctx):
     await ctx.send(embed=embed)
     logger.info('Discord help command')
 
+@discordbot.command()
+async def tip(ctx):
+    await ctx.send(bot_commands.tip)
+
 # Main functions
 def slack_run():
     print('---------------------------------')
@@ -129,4 +140,7 @@ def discord_run(discordbot):
     discordbot.run(config.BOT_USER_TOKEN)
 
 if __name__ == '__main__':
-    slack_run()
+    discord_thread = threading.Thread(target=discord_run)
+    discord_thread.start()
+    slack_thread = threading.Thread(target=slack_run)
+    slack_thread.start()
