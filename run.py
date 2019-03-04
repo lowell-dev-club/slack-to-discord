@@ -129,14 +129,17 @@ async def tip(ctx):
 
 # Main functions
 def slack_run():
-    print('---------------------------------')
-    print(' Lowell Dev CLub Slack Bot Online')
-    print('---------------------------------')
-    bot = Bot()
-    bot.run()
+    logger.info('----------------------------------')
+    logger.info(' Lowell Dev CLub Slack Bot Online')
+    logger.info('----------------------------------')
+    slackbot = Bot()
+    slackbot.run()
 
 def discord_run(discordbot):
     add_cogs(discordbot)
+    logger.info('------------------------------------')
+    logger.info(' Lowell Dev CLub Discord Bot Online')
+    logger.info('------------------------------------')
     discordbot.run(config.BOT_USER_TOKEN)
 
 if __name__ == '__main__':
