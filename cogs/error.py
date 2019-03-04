@@ -6,13 +6,13 @@ from discord.ext import commands
 
 
 class CommandErrorHandler:
-    def __init__(self, bot, config):
+    
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
 
     async def on_command_error(self, ctx, error):
         if hasattr(ctx.command, "on_error"):
-            return  # Don't interfere with custom error handlers
+            return # Don't interfere with custom error handlers
 
         error = getattr(error, "original", error)  # get original error
 
