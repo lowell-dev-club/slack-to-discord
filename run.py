@@ -5,7 +5,7 @@ import threading
 import bot_commands
 from log import logger
 from json import dumps
-from cogs import music, error, meta, tips
+from cogs import music, meta
 from config import announce_code, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE, SLACK_ANNOUNCMENT, BOT_USER_TOKEN
 from discord.ext import commands
 from slackbot.bot import Bot, respond_to, listen_to, default_reply
@@ -72,12 +72,6 @@ def tip(message):
 discordbot = commands.Bot(command_prefix='!', description='A bot that plays music.')
 discordbot.remove_command('help')
 
-COGS = [music.Music, error.CommandErrorHandler, meta.Meta, tips.Tips]
-
-def add_cogs(bot):
-    for cog in COGS:
-        bot.add_cog(cog(bot))  # Initialize the cog and add it to the bot
-
 @discordbot.event
 async def on_ready():
     logger.info('Logged in as')
@@ -136,7 +130,6 @@ def slack_run():
     slackbot.run()
 
 def discord_run(discordbot):
-    add_cogs(discordbot)
     logger.info('------------------------------------')
     logger.info(' Lowell Dev CLub Discord Bot Online')
     logger.info('------------------------------------')
