@@ -17,7 +17,9 @@ from webhooks.discordwebhook import discordwebhook
 @default_reply
 def my_default_handler(message):
     logger.info('default reply - message not understood')
-    message.reply('This command has not been coded. Ask a leader or check the command list')
+    message.reply(
+        'This command has not been coded. Ask a leader or check the command list')
+
 
 @respond_to('announce (.*) (.*)', re.IGNORECASE)
 def stats(message, announcement=None, code=None):
@@ -29,48 +31,46 @@ def stats(message, announcement=None, code=None):
         # Slack
         slackwebhook(announcement, SLACK_ANNOUNCMENT)
         # Discord
-        discordwebhook(announcement, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE)
+        discordwebhook(
+            announcement,
+            WEBHOOK_ID_ANNOUNCE,
+            WEBHOOK_TOKEN_ANNOUNCE)
 
     else:
         my_default_handler(message)
 
+
 @listen_to('!info', re.IGNORECASE)
 def information(message):
     true = 'true'
-    attachments = [
-    {
-        "fallback": "Required plain-text summary of the attachment.",
-        "pretext": "Info command",
-        'color': '#59afe1',
-        "fields": [
-                {
-                    "title": "Author",
-                    "value": "Rafael Cenzano",
-                    "short": true
-                },
-                {
-                    "title": "Help",
-                    "value": "!help to get command list",
-                    "short": true
-                },
-                {
-                    "title": "Why is this a bot?",
-                    "value": "I can communicate on Slack and Discord to close the gap of the two communities",
-                    "short": true
-                }
-        ]
-    }]
+    attachments = [{"fallback": "Required plain-text summary of the attachment.",
+                    "pretext": "Info command",
+                    'color': '#59afe1',
+                    "fields": [{"title": "Author",
+                                "value": "Rafael Cenzano",
+                                "short": true},
+                               {"title": "Help",
+                                "value": "!help to get command list",
+                                "short": true},
+                               {"title": "Why is this a bot?",
+                                "value": "I can communicate on Slack and Discord to close the gap of the two communities",
+                                "short": true}]}]
     message.send_webapi('', dumps(attachments))
     logger.info('Slack info command')
+
 
 listen_to('!tip', re.IGNORECASE)
 @discordbot.command()
 def tip(message):
     message.send(bot_commands.tip)
 
+
 # Discord bot
-discordbot = commands.Bot(command_prefix='!', description='A bot that plays music.')
+discordbot = commands.Bot(
+    command_prefix='!',
+    description='A bot that plays music.')
 discordbot.remove_command('help')
+
 
 @discordbot.event
 async def on_ready():
@@ -78,6 +78,7 @@ async def on_ready():
     logger.info(discordbot.user.name)
     logger.info(discordbot.user.id)
     logger.info('--------------')
+
 
 @discordbot.command()
 async def info(ctx):
@@ -94,11 +95,13 @@ async def info(ctx):
                     value="!help to get command list")
 
     # give description
-    embed.add_field(name="Why is this a bot?",
-                    value="I can communicate on Slack and Discord to close the gap of the two communities")
+    embed.add_field(
+        name="Why is this a bot?",
+        value="I can communicate on Slack and Discord to close the gap of the two communities")
 
     await ctx.send(embed=embed)
     logger.info('Discord info command')
+
 
 @discordbot.command()
 async def help(ctx):
@@ -117,11 +120,14 @@ async def help(ctx):
     await ctx.send(embed=embed)
     logger.info('Discord help command')
 
+
 @discordbot.command()
 async def tip(ctx):
     await ctx.send(bot_commands.tip)
 
 # Main functions
+
+
 def slack_run():
     logger.info('----------------------------------')
     logger.info(' Lowell Dev CLub Slack Bot Online')
@@ -129,11 +135,13 @@ def slack_run():
     slackbot = Bot()
     slackbot.run()
 
+
 def discord_run(discordbot):
     logger.info('------------------------------------')
     logger.info(' Lowell Dev CLub Discord Bot Online')
     logger.info('------------------------------------')
     discordbot.run(config.BOT_USER_TOKEN)
+
 
 if __name__ == '__main__':
     discord_thread = threading.Thread(target=discord_run)
