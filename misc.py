@@ -1,5 +1,6 @@
 # Some generic utility commands.
 
+
 def format_seconds(time_seconds):
     """Formats some number of seconds into a string of format d days, x hours, y minutes, z seconds"""
     seconds = time_seconds
