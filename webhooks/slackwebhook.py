@@ -1,9 +1,10 @@
 # Imports
+import asyncio
+import aiohttp
 from log import logger
 from json import dumps
-from requests import post
 
-def slackwebhook(message, SLACK):
+async def slackwebhook(message, SLACK):
 
     slack_data = {
                  'text': str(message),
@@ -12,8 +13,8 @@ def slackwebhook(message, SLACK):
                  }
     logger.debug('create slack data')
 
-    response = post(SLACK,
-                    data=dumps(slack_data),
-                    headers={'Content-Type': 'application/json'}
-                    )
+    async with aiohttp.ClientSession() as session:
+        async with session.post(SLACK, data=dumps(slack_data), headers={'Content-Type': 'application/json'}) as resp:
+            logger.info(await resp.text())
+
     logger.debug('send slack data through slack webhook')
