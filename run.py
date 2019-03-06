@@ -1,17 +1,24 @@
 # Imports
 import re
 import discord
+import logging
 import threading
-import bot_commands
-from log import logger
+from sys import stdout
 from json import dumps
-from cogs import music, meta
 from config import announce_code, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE, SLACK_ANNOUNCMENT, BOT_USER_TOKEN
 from discord.ext import commands
 from slackbot.bot import Bot, respond_to, listen_to, default_reply
 from webhooks.slackwebhook import slackwebhook
 from webhooks.discordwebhook import discordwebhook
 
+# logging config
+logger = logging.getLogger(__name__)
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler = logging.StreamHandler(stdout)
+handler.setLevel(logging.INFO)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 # Slack bot
 @default_reply
@@ -59,76 +66,9 @@ def information(message):
     logger.info('Slack info command')
 
 
-listen_to('!tip', re.IGNORECASE)
-@discordbot.command()
-def tip(message):
-    message.send(bot_commands.tip)
-
-
-# Discord bot
-discordbot = commands.Bot(
-    command_prefix='!',
-    description='A bot that plays music.')
-discordbot.remove_command('help')
-
-
-@discordbot.event
-async def on_ready():
-    logger.info('Logged in as')
-    logger.info(discordbot.user.name)
-    logger.info(discordbot.user.id)
-    logger.info('--------------')
-
-
-@discordbot.command()
-async def info(ctx):
-    embed = discord.Embed(title="Dev Club",
-                          description="Lowell Dev Club bot.",
-                          color=0x59afe1)
-
-    # give info about you here
-    embed.add_field(name="Author",
-                    value="Enchanter77#0730")
-
-    # give command help
-    embed.add_field(name="Help",
-                    value="!help to get command list")
-
-    # give description
-    embed.add_field(
-        name="Why is this a bot?",
-        value="I can communicate on Slack and Discord to close the gap of the two communities")
-
-    await ctx.send(embed=embed)
-    logger.info('Discord info command')
-
-
-@discordbot.command()
-async def help(ctx):
-    embed = discord.Embed(title="Dev Club",
-                          description="Lowell Dev Club bot",
-                          color=0xeee657)
-
-    embed.add_field(name="!info",
-                    value="Gives a little info about the bot",
-                    inline=False)
-
-    embed.add_field(name="!help",
-                    value="Gives this message",
-                    inline=False)
-
-    await ctx.send(embed=embed)
-    logger.info('Discord help command')
-
-
-@discordbot.command()
-async def tip(ctx):
-    await ctx.send(bot_commands.tip)
-
 # Main functions
-
-
 def slack_run():
+    print('aa')
     logger.info('----------------------------------')
     logger.info(' Lowell Dev CLub Slack Bot Online')
     logger.info('----------------------------------')
@@ -136,15 +76,5 @@ def slack_run():
     slackbot.run()
 
 
-def discord_run(discordbot):
-    logger.info('------------------------------------')
-    logger.info(' Lowell Dev CLub Discord Bot Online')
-    logger.info('------------------------------------')
-    discordbot.run(config.BOT_USER_TOKEN)
-
-
 if __name__ == '__main__':
-    discord_thread = threading.Thread(target=discord_run)
-    discord_thread.start()
-    slack_thread = threading.Thread(target=slack_run)
-    slack_thread.start()
+    slack_run()
