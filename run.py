@@ -60,10 +60,9 @@ def information(message):
 
 # Main functions
 def slack_run():
-    print('aa')
-    logging.info('----------------------------------')
-    logging.info(' Lowell Dev CLub Slack Bot Online')
-    logging.info('----------------------------------')
+    print('----------------------------------')
+    print(' Lowell Dev CLub Slack Bot Online')
+    print('----------------------------------')
     slackbot = Bot()
     slackbot.run()
 
