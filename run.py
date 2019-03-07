@@ -11,19 +11,11 @@ from slackbot.bot import Bot, respond_to, listen_to, default_reply
 from webhooks.slackwebhook import slackwebhook
 from webhooks.discordwebhook import discordwebhook
 
-# logging config
-logger = logging.getLogger(__name__)
-formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler = logging.StreamHandler(stdout)
-handler.setLevel(logging.INFO)
-handler.setFormatter(formatter)
-logger.addHandler(handler)
 
 # Slack bot
 @default_reply
 def my_default_handler(message):
-    logger.info('default reply - message not understood')
+    logging.info('default reply - message not understood')
     message.reply(
         'This command has not been coded. Ask a leader or check the command list')
 
@@ -33,7 +25,7 @@ def stats(message, announcement=None, code=None):
 
     if code == announce_code:
         message.reply('Announcing your announcement: ' + str(announcement))
-        logger.info('announce command')
+        logging.info('announce command')
 
         # Slack
         slackwebhook(announcement, SLACK_ANNOUNCMENT)
@@ -63,15 +55,15 @@ def information(message):
                                 "value": "I can communicate on Slack and Discord to close the gap of the two communities",
                                 "short": true}]}]
     message.send_webapi('', dumps(attachments))
-    logger.info('Slack info command')
+    logging.info('Slack info command')
 
 
 # Main functions
 def slack_run():
     print('aa')
-    logger.info('----------------------------------')
-    logger.info(' Lowell Dev CLub Slack Bot Online')
-    logger.info('----------------------------------')
+    logging.info('----------------------------------')
+    logging.info(' Lowell Dev CLub Slack Bot Online')
+    logging.info('----------------------------------')
     slackbot = Bot()
     slackbot.run()
 
