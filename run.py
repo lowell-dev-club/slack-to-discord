@@ -2,6 +2,7 @@
 import re
 import discord
 import logging
+import asyncio
 import threading
 from sys import stdout
 from json import dumps
@@ -67,5 +68,37 @@ def slack_run():
     slackbot.run()
 
 
+bot = commands.Bot(command_prefix='!', description='Dev Club bot for music')
+
+@bot.event
+async def on_ready():
+    print('------------------------------------')
+    print(' Lowell Dev CLub Discord Bot Online')
+    print('------------------------------------')
+    #await bot.change_presence(game=discord.Game(name="Use !que <song>"))
+    #await bot.join_voice_channel(549804955305902110)
+
+@bot.command(pass_context=True, description='que songs')
+async def que(ctx):
+    pass
+
+@bot.command(pass_context=True, description='play que')
+async def play(ctx):
+    #vc = ctx.message.author.voice.voice_channel
+    #print(vc)
+    #vc = await ctx.join_voice_channel('549804955305902110')
+    #await bot.join_voice_channel('549804955305902110')
+    channel = discord.utils.get(ctx.message.server.channels, type=ChannelType.voice)
+    voice = await bot.join_voice_channel(channel)
+    player = vc.create_ffmpeg_player('song.mp3', after=lambda: print('done'))
+    player.start()
+    while not player.is_done():
+        await asyncio.sleep(1)
+    # disconnect after the player has finished
+    player.stop()
+    await vc.disconnect()
+
+
 if __name__ == '__main__':
-    slack_run()
+    #slack_run()
+    bot.run('NTQ5ODA1MDA0NjQ3NTYzMjk0.D2WrMw.8gZLT2m3l7PcINCQbHXdzcOD7AQ')
