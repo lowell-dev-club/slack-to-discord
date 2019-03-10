@@ -6,7 +6,7 @@ import asyncio
 import threading
 from sys import stdout
 from json import dumps
-from config import announce_code, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE, SLACK_ANNOUNCMENT, BOT_USER_TOKEN
+from config import announce_code, WEBHOOK_ID_ANNOUNCE, WEBHOOK_TOKEN_ANNOUNCE, SLACK_ANNOUNCMENT, DISCORD_BOT_USER_TOKEN
 from discord.ext import commands
 from slackbot.bot import Bot, respond_to, listen_to, default_reply
 from webhooks.slackwebhook import slackwebhook
@@ -101,4 +101,4 @@ async def play(ctx):
 
 if __name__ == '__main__':
     slack_run()
-    #bot.run(BOT_USER_TOKEN)
+    #bot.run(DISCORD_BOT_USER_TOKEN)
