@@ -100,5 +100,5 @@ async def play(ctx):
 
 
 if __name__ == '__main__':
-    #slack_run()
-    bot.run(BOT_USER_TOKEN)
+    slack_run()
+    #bot.run(BOT_USER_TOKEN)
