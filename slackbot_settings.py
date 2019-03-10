@@ -1,4 +1,4 @@
 # Import token from config
 import config
 
-API_TOKEN = config.BOT_USER_TOKEN
+API_TOKEN = config.SLACK_BOT_TOKEN
