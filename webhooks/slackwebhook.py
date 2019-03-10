@@ -1,5 +1,5 @@
 # Imports
-import requests
+from requests import post
 from json import dumps
 
 def slackwebhook(message, SLACK):
