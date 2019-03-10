@@ -10,8 +10,7 @@ def slackwebhook(message, SLACK):
                  'icon_emoji': ':dev-club:'
                  }
 
-    response = post(config.SLACK,
+    response = post(SLACK,
                     data=dumps(slack_data),
                     headers={'Content-Type': 'application/json'}
                     )
-
