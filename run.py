@@ -2,6 +2,7 @@
 import re
 import discord
 import log
+import time
 import asyncio
 import threading
 from sys import stdout
@@ -83,13 +84,28 @@ async def on_ready():
     # await bot.change_presence(game=discord.Game(name="Use !que <song>"))
     # await bot.join_voice_channel(549804955305902110)
 
+@bot.command(pass_context=True, description='hello command')
+async def hello(ctx):
+    await ctx.send('Hello')
+
 @bot.command(pass_context=True, description='bot info')
 async def info(ctx):
-    embed = discord.Embed(title="Info Command", description="info command", color=0x00ff00)
+    embed = discord.Embed(title="Info Command", description="info command", color=0x59afe1)
     embed.add_field(name="Author", value="Rafael Cenzano", inline=False)
     embed.add_field(name="Help", value="!help to get command list", inline=False)
     embed.add_field(name="Why is this a bot?", value="I can communicate on Slack and Discord to close the gap of the two communities", inline=False)
-    await bot.send_message(ctx.channel, embed=embed)
+    await ctx.send(embed=embed)
+
+
+@bot.command(pass_context=True, description='check bot ping')
+async def ping(ctx):
+    pingtime = time.time()
+    e = discord.Embed(title="Pinging...", colour=0x59afe1)
+    await ctx.send(embed=e)
+    ping = time.time() - pingtime
+    complete = f"Pong, {ping} seconds"
+    em = discord.Embed(title=complete, colour=0x59afe1)
+    await ctx.send(embed=em)
 
 
 @bot.command(pass_context=True, description='que songs')
@@ -106,7 +122,7 @@ async def play(ctx):
     channel = discord.utils.get(
         ctx.message.server.channels,
         type=ChannelType.voice)
-    voice = await bot.join_voice_channel(channel)
+    voice = await ctx.join_voice_channel(channel)
     player = vc.create_ffmpeg_player('song.mp3', after=lambda: print('done'))
     player.start()
     while not player.is_done():
