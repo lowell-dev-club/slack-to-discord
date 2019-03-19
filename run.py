@@ -83,6 +83,14 @@ async def on_ready():
     # await bot.change_presence(game=discord.Game(name="Use !que <song>"))
     # await bot.join_voice_channel(549804955305902110)
 
+@bot.command(pass_context=True, description='bot info')
+async def info(ctx):
+    embed = discord.Embed(title="Info Command", description="info command", color=0x00ff00)
+    embed.add_field(name="Author", value="Rafael Cenzano", inline=False)
+    embed.add_field(name="Help", value="!help to get command list", inline=False)
+    embed.add_field(name="Why is this a bot?", value="I can communicate on Slack and Discord to close the gap of the two communities", inline=False)
+    await bot.send_message(ctx.channel, embed=embed)
+
 
 @bot.command(pass_context=True, description='que songs')
 async def que(ctx):
@@ -109,5 +117,5 @@ async def play(ctx):
 
 
 if __name__ == '__main__':
-    slack_run()
-    # bot.run(DISCORD_BOT_USER_TOKEN)
+    #slack_run()
+    bot.run(DISCORD_BOT_USER_TOKEN)
