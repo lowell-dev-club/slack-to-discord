@@ -63,6 +63,13 @@ def information(message):
     message.send_webapi('', dumps(attachments))
     logger.info('Slack info command')
 
+@listen_to('!ping', re.IGNORECASE)
+def ping_test(message):
+    pingtime = time.time()
+    message.send('Pinging...')
+    ping = time.time() - pingtime
+    message.send(f"Pong, {ping} seconds")
+
 
 # Main functions
 def slack_run():
@@ -117,12 +124,12 @@ async def que(ctx):
 async def play(ctx):
     #vc = ctx.message.author.voice.voice_channel
     # print(vc)
-    # vc = await ctx.join_voice_channel('549804955305902110')
-    # await bot.join_voice_channel('549804955305902110')
-    channel = discord.utils.get(
-        ctx.message.server.channels,
-        type=ChannelType.voice)
-    voice = await ctx.join_voice_channel(channel)
+    # vc = await ctx.join_voice_channel('554249697515274244')
+    # await bot.join_voice_channel('554249697515274244')
+    #channel = discord.utils.get(
+    #    ctx.message.server.channels,
+    #    type=ChannelType.voice)
+    voice = await ctx.join_voice_channel('554249697515274244')
     player = vc.create_ffmpeg_player('song.mp3', after=lambda: print('done'))
     player.start()
     while not player.is_done():
@@ -133,5 +140,5 @@ async def play(ctx):
 
 
 if __name__ == '__main__':
-    #slack_run()
-    bot.run(DISCORD_BOT_USER_TOKEN)
+    slack_run()
+    #bot.run(DISCORD_BOT_USER_TOKEN)
