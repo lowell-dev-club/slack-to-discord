@@ -68,7 +68,8 @@ def ping_test(message):
     pingtime = time.time()
     message.send('Pinging...')
     ping = time.time() - pingtime
-    message.send(f"Pong, {ping} seconds")
+    message.send(f'Pong, {ping} seconds')
+    logger.info(f'Ping command - ping at : {ping}')
 
 
 # Main functions
